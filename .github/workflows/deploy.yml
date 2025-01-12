@@ -63,7 +63,12 @@ jobs:
           echo "Checking total size of dist folder..."
           SIZE=$(du -sh ./dist | awk '{print $1}')
           echo "Total size of dist folder: $SIZE"
-          if [[ "$SIZE" > "10G" ]]; then
+          
+          # Convert human-readable size (e.g., 840K, 1M, 2G) into bytes for comparison
+          SIZE_IN_BYTES=$(numfmt --from=iec $SIZE)
+          MAX_SIZE_IN_BYTES=10737418240  # 10GB in bytes
+
+          if [ "$SIZE_IN_BYTES" -gt "$MAX_SIZE_IN_BYTES" ]; then
             echo "Warning: dist folder exceeds 10GB limit!"
           else
             echo "dist folder size is within the acceptable limit."
