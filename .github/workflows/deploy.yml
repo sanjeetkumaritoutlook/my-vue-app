@@ -37,7 +37,13 @@ jobs:
 
       - name: Build the project
         run: npm run build
-
+ 
+      - name: Validate `dist` folder
+        run: |
+          echo "Validating dist folder contents..."
+          find ./dist -type l -exec echo "Symlink found: {}" \; && exit 1 || echo "No symlinks found."
+          du -sh ./dist
+     
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -64,6 +70,4 @@ jobs:
 
      - name: Deploy to GitHub Pages
        uses: actions/deploy-pages@v4
-       env:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+ 
