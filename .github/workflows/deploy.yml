@@ -37,6 +37,15 @@ jobs:
 
       - name: Build the project
         run: npm run build
+
+      - name: Check for Symlinks and Hard Links
+        run: |
+          echo "Checking for symlinks in dist folder..."
+          find ./dist -type l && exit 1 || echo "No symlinks found."
+          
+          echo "Checking for hard links in dist folder..."
+          find ./dist -type f -links +1 && exit 1 || echo "No hard links found."
+     
      
       - name: Upload artifact
         uses: actions/upload-artifact@v4
