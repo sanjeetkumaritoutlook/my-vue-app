@@ -39,9 +39,12 @@ jobs:
 
       - name: Build the project
         run: npm run build
+   
+      - name: Upload build artifacts
+        uses: actions/upload-pages-artifact@v3
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
-        with:
+        env:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
