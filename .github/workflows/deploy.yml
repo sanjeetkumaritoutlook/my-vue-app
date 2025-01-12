@@ -107,13 +107,14 @@ jobs:
      - name: Download artifact
        uses: actions/download-artifact@v4
        with:
-         name: github-pages # Download the `dist` artifact 
-
+         name: github-pages # Artifact name used here should match the one used in upload
+         path: ./dist  # Ensure the path is correctly specified
+ # This should now exist if the artifact is downloaded correctly
      - name: List contents of downloaded artifact
        run: |
            echo "Listing contents of downloaded artifact:"
-           ls -alR ./dist
-           
+           ls -alR ./dist  
+
      - name: Deploy to GitHub Pages
        uses: actions/deploy-pages@v4
        env:
