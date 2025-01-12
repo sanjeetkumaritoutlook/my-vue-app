@@ -58,7 +58,17 @@ jobs:
             echo "No hard links found."
           fi
      
-     
+      - name: Check size of dist folder
+        run: |
+          echo "Checking total size of dist folder..."
+          SIZE=$(du -sh ./dist | awk '{print $1}')
+          echo "Total size of dist folder: $SIZE"
+          if [[ "$SIZE" > "10G" ]]; then
+            echo "Warning: dist folder exceeds 10GB limit!"
+          else
+            echo "dist folder size is within the acceptable limit."
+          fi
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
