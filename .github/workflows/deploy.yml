@@ -20,7 +20,10 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-   
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -73,6 +76,14 @@ jobs:
           else
             echo "dist folder size is within the acceptable limit."
           fi
+      - name: Verify dist folder contents
+        run: |
+          echo "Listing contents of dist folder before upload:"
+          ls -al ./dist
+      - name: List all files in dist folder (including hidden)
+        run: |
+          echo "Listing all files (including hidden) in dist folder:"
+          ls -alR ./dist 
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -96,11 +107,16 @@ jobs:
      - name: Download artifact
        uses: actions/download-artifact@v4
        with:
-         name: github-pages # Download the `dist` artifact  
+         name: github-pages # Download the `dist` artifact 
 
+     - name: List contents of downloaded artifact
+       run: |
+           echo "Listing contents of downloaded artifact:"
+           ls -alR ./dist
+           
      - name: Deploy to GitHub Pages
        uses: actions/deploy-pages@v4
        env:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./dist
- 
+      
