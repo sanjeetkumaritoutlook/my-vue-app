@@ -114,7 +114,12 @@ jobs:
        run: |
            echo "Listing contents of downloaded artifact:"
            ls -alR ./dist  
-
+  #Remove git metadata from dist folder before the deployment
+     - name: Clean up dist folder
+       run: |
+          rm -rf ./dist/.git 
+          rm -rf ./dist/.DS_Store 
+          
      - name: Deploy to GitHub Pages
        uses: actions/deploy-pages@v4
        env:
