@@ -1,17 +1,23 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <FluidNewComponent/>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
+import FluidNewComponent from './components/FluidNewComponent.vue';
 
+import { fluid } from './fluid';
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    HelloWorld,
+    FluidNewComponent
   }
 }
+let env = fluid.environments.external;
+fluid.init(env);
 </script>
 
 <style>
