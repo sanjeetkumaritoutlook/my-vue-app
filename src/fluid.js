@@ -8,9 +8,9 @@ export const fluid = {
       },
       test: {
         label: 'Test',
-        esm: 'https://fluid-test.lmig.com/fluid/build/fluid.esm.js',
-        legacy: 'https://fluid-test.lmig.com/fluid/build/fluid.js',
-        css: 'https://fluid-test.lmig.com/fluid/build/fluid.css',
+        esm: 'https://fluid-test.libertymutual.com/fluid/build/fluid.esm.js',
+        legacy: 'https://fluid-test.libertymutual.com/fluid/build/fluid.js',
+        css: 'https://fluid-test.libertymutual.com/fluid/build/fluid.css',
       },
       prod: {
         label: 'Production',
