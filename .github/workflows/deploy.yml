@@ -51,13 +51,17 @@ jobs:
           else
             echo "No symlinks found."
           fi
-
+  #clearly list the hard links with their inode numbers and file names, helping  locate and address them.
       - name: Check for Hard Links
         run: |
             echo "Checking for hard links..."
-            if ls -liR | awk '{print $1}' | sort | uniq -d | grep -q .; then
-              echo "Warning: Hard links found:"
-              ls -liR | awk '{print $1}' | sort | uniq -d
+            hard_links=$(ls -liR | awk '{print $1, $NF}' | sort | uniq -w 10 -d)
+
+            if [[ -n "$hard_links" ]]; then
+              echo "Hard links found:"
+              echo "$hard_links" | while read -r inode file; do
+                echo "Inode: $inode, File: $file"
+              done
             else
               echo "No hard links found."
             fi
