@@ -70,6 +70,7 @@ jobs:
           fi
 
      #this plugin has hard-link : ./node_modules/@achrinza/node-ipc/dao:, File: ./node_modules/@achrinza/node-ipc/dao:
+      #npm ls @achrinza/node-ipc
       - name: Attempt to Remove Hard Links
         if: steps.check_hard_links.outputs.found == 'true'
         run: |
@@ -140,11 +141,6 @@ jobs:
        run: |
           rm -rf ./dist/.git 
           rm -rf ./dist/.DS_Store 
-          
-     - name: Debug Deployment
-       run: |
-            echo "Running deployment to GitHub Pages..."
-            echo "Publish directory: ./dist"
 
      - name: Deploy to GitHub Pages
        uses: actions/deploy-pages@v4
