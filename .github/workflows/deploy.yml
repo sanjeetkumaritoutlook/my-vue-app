@@ -141,6 +141,9 @@ jobs:
        run: |
           rm -rf ./dist/.git 
           rm -rf ./dist/.DS_Store 
+          
+     - name: Remove @achrinza/node-ipc from dist folder
+       run: rm -rf dist/node_modules/@achrinza/node-ipc
 
      - name: Deploy to GitHub Pages
        uses: actions/deploy-pages@v4
