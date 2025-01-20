@@ -53,19 +53,35 @@ jobs:
           fi
   #clearly list the hard links with their inode numbers and file names, helping  locate and address them.
       - name: Check for Hard Links
+        id: check_hard_links
         run: |
-            echo "Checking for hard links..."
-            hard_links=$(ls -liR | awk '{print $1, $NF}' | sort | uniq -w 10 -d)
+          echo "Checking for hard links..."
+          hard_links=$(ls -liR | awk '{print $1, $NF}' | sort | uniq -w 10 -d | grep -v 'total')
 
-            if [[ -n "$hard_links" ]]; then
-              echo "Hard links found:"
-              echo "$hard_links" | while read -r inode file; do
-                echo "Inode: $inode, File: $file"
-              done
-            else
-              echo "No hard links found."
-            fi
+          if [[ -n "$hard_links" ]]; then
+            echo "Hard links found."
+            echo "$hard_links" | while read -r inode file; do
+              echo "Inode: $inode, File: $file"
+            done
+            echo "::set-output name=found::true"
+          else
+            echo "No hard links found."
+            echo "::set-output name=found::false"
+          fi
+
      
+      - name: Attempt to Remove Hard Links
+        if: steps.check_hard_links.outputs.found == 'true'
+        run: |
+          echo "Resolving hard links..."
+          ls -liR | awk '{print $1, $NF}' | sort | uniq -w 10 -d | grep -v 'total' | while read -r inode file; do
+            if [[ -f "$file" ]]; then
+              echo "Fixing hard link: $file"
+              cp --remove-destination "$file" "${file}.tmp" && mv "${file}.tmp" "$file"
+            fi
+          done
+          echo "Hard link resolution complete."
+          
       - name: Check size of dist folder
         run: |
           echo "Checking total size of dist folder..."
