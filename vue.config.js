@@ -2,7 +2,7 @@ const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   configureWebpack: {
     externals: {
-      '@achrinza/node-ipc': 'commonjs @achrinza/node-ipc'
+      '@achrinza/node-ipc': 'commonjs @achrinza/node-ipc'  // or 'false' to completely exclude
     }
   },
   transpileDependencies: true,
