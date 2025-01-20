@@ -52,14 +52,15 @@ jobs:
             echo "No symlinks found."
           fi
 
-          echo "Checking for hard links in dist folder..."
-          HARDLINKS=$(find ./dist -type f -links +1)
-          if [ -n "$HARDLINKS" ]; then
-            echo "Hard links found in dist folder:"
-            echo "$HARDLINKS"
-          else
-            echo "No hard links found."
-          fi
+      - name: Check for Hard Links
+        run: |
+            echo "Checking for hard links..."
+            if ls -liR | awk '{print $1}' | sort | uniq -d | grep -q .; then
+              echo "Warning: Hard links found:"
+              ls -liR | awk '{print $1}' | sort | uniq -d
+            else
+              echo "No hard links found."
+            fi
      
       - name: Check size of dist folder
         run: |
