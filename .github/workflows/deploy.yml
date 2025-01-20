@@ -35,10 +35,8 @@ jobs:
         with:
           node-version: '18' # Ensure this matches your project's Node.js version
 
-      - name: Install npm cache and reinstall dependencies
-        run: |
-              npm cache clean --force
-              npm install --production
+      - name: Install dependencies
+        run: npm install --production
 
       - name: Build Vue App
         run: npm run build
