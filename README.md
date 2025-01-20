@@ -1,5 +1,5 @@
 # my-vue-app
-
+Vue 3.2 : https://blog.vuejs.org/posts/vue-3-2
 ## Project setup
 ```
 npm install
@@ -9,7 +9,7 @@ npm install
 ```
 npm run serve
 ```
-
+runs on http://localhost:8080/
 ### Compiles and minifies for production
 ```
 npm run build

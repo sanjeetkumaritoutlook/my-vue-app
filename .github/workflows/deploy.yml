@@ -41,7 +41,7 @@ jobs:
       - name: Build Vue App
         run: npm run build
 
-      - name: Check for Symlinks and Hard Links
+      - name: Check for Symlinks
         run: |
           echo "Checking for symlinks in dist folder..."
           SYMLINKS=$(find ./dist -type l)
@@ -69,7 +69,7 @@ jobs:
             echo "::set-output name=found::false"
           fi
 
-     
+     #this plugin has hard-link : ./node_modules/@achrinza/node-ipc/dao:, File: ./node_modules/@achrinza/node-ipc/dao:
       - name: Attempt to Remove Hard Links
         if: steps.check_hard_links.outputs.found == 'true'
         run: |
@@ -81,7 +81,7 @@ jobs:
             fi
           done
           echo "Hard link resolution complete."
-          
+
       - name: Check size of dist folder
         run: |
           echo "Checking total size of dist folder..."
@@ -141,9 +141,15 @@ jobs:
           rm -rf ./dist/.git 
           rm -rf ./dist/.DS_Store 
           
+     - name: Debug Deployment
+       run: |
+            echo "Running deployment to GitHub Pages..."
+            echo "Publish directory: ./dist"
+
      - name: Deploy to GitHub Pages
        uses: actions/deploy-pages@v4
        env:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./dist
       
+
