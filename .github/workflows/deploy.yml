@@ -40,6 +40,13 @@ jobs:
      # Step 4: Build the Vue app
       - name: Build Vue App
         run: npm run build
+       
+      # Step 5: Remove Hard Links and Symlinks
+      - name: Remove Hard Links and Symlinks
+        run: |
+          find ./dist -type l -exec cp --remove-destination {} {}.tmp \; -exec mv {}.tmp {} \;
+          find ./dist -type f -exec ls -i {} + | awk '{print $1, $NF}' | sort | uniq -d | awk '{print $2}' | xargs -I {} cp --remove-destination {} {}.tmp && mv {}.tmp {}
+   
       # Step 5: Upload artifact (build output)
       - name: Upload artifact
         uses: actions/upload-artifact@v4
