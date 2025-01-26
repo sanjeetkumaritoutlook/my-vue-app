@@ -16,6 +16,18 @@ Prettier - to maintain consistent code formatting.
 https://blog.logrocket.com/automatically-build-deploy-vuejs-app-github-pages/
 https://github.com/dazecoop/github-page-deploy?tab=readme-ov-file
 
+###  Vue CLI automatically sets process.env.NODE_ENV for you in different scenarios:
+
+When you run npm run serve:
+
+process.env.NODE_ENV is set to 'development'.
+
+When you run npm run build:
+
+process.env.NODE_ENV is set to 'production'.
+
+Minimize dependencies and optimize imports (e.g., tree-shaking).
+
 ### Compiles and hot-reloads for development
 ```
 npm run serve

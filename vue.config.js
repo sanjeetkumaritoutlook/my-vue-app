@@ -1,9 +1,9 @@
-const { defineConfig } = require('@vue/cli-service')
+const { defineConfig } = require('@vue/cli-service');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
 module.exports = defineConfig({
   configureWebpack: {
-    externals: {
-      '@achrinza/node-ipc': 'commonjs @achrinza/node-ipc'  // or 'false' to completely exclude
-    }
+    plugins: [new BundleAnalyzerPlugin()],
   },
   transpileDependencies: true,
   publicPath: process.env.NODE_ENV === 'production'
