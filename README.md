@@ -4,7 +4,11 @@ Vue 3.2 : https://blog.vuejs.org/posts/vue-3-2
 ```
 npm install
 ```
-
+### VS Code Estensions for Vue.js development
+Vetur:- Provides syntax highlighting, IntelliSense, and formatting for .vue files. (Vue Tooling)
+Vue Language Features (Volar):- The new official Vue 3 extension for TypeScript support and improved performance.
+ESLint plugin - for linting and formatting.
+Prettier - to maintain consistent code formatting.
 ### Compiles and hot-reloads for development
 ```
 npm run serve
