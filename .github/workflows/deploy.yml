@@ -26,122 +26,42 @@ jobs:
       id-token: write
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Step 1: Checkout repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout code
         uses: actions/checkout@v4
-
+      # Step 2: Setup Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18' # Ensure this matches your project's Node.js version
-
+     # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
-
+     # Step 4: Build the Vue app
       - name: Build Vue App
         run: npm run build
-
-      - name: Check for Symlinks
-        run: |
-          echo "Checking for symlinks in dist folder..."
-          SYMLINKS=$(find ./dist -type l)
-          if [ -n "$SYMLINKS" ]; then
-            echo "Symlinks found in dist folder:"
-            echo "$SYMLINKS"
-          else
-            echo "No symlinks found."
-          fi
-  #clearly list the hard links with their inode numbers and file names, helping  locate and address them.
-      - name: Check for Hard Links
-        id: check_hard_links
-        run: |
-          echo "Checking for hard links..."
-          hard_links=$(ls -liR | awk '{print $1, $NF}' | sort | uniq -w 10 -d | grep -v 'total')
-
-          if [[ -n "$hard_links" ]]; then
-            echo "Hard links found."
-            echo "$hard_links" | while read -r inode file; do
-              echo "Inode: $inode, File: $file"
-            done
-            echo "::set-output name=found::true"
-          else
-            echo "No hard links found."
-            echo "::set-output name=found::false"
-          fi
-
-     #this plugin has hard-link : ./node_modules/@achrinza/node-ipc/dao:, File: ./node_modules/@achrinza/node-ipc/dao:
-      #npm ls @achrinza/node-ipc
-      - name: Attempt to Remove Hard Links
-        if: steps.check_hard_links.outputs.found == 'true'
-        run: |
-          echo "Resolving hard links..."
-          ls -liR | awk '{print $1, $NF}' | sort | uniq -w 10 -d | grep -v 'total' | while read -r inode file; do
-            if [[ -f "$file" ]]; then
-              echo "Fixing hard link: $file"
-              cp --remove-destination "$file" "${file}.tmp" && mv "${file}.tmp" "$file"
-            fi
-          done
-          echo "Hard link resolution complete."
-
-      - name: Check size of dist folder
-        run: |
-          echo "Checking total size of dist folder..."
-          SIZE=$(du -sh ./dist | awk '{print $1}')
-          echo "Total size of dist folder: $SIZE"
-          
-          # Convert human-readable size (e.g., 840K, 1M, 2G) into bytes for comparison
-          SIZE_IN_BYTES=$(numfmt --from=iec $SIZE)
-          MAX_SIZE_IN_BYTES=10737418240  # 10GB in bytes
-
-          if [ "$SIZE_IN_BYTES" -gt "$MAX_SIZE_IN_BYTES" ]; then
-            echo "Warning: dist folder exceeds 10GB limit!"
-          else
-            echo "dist folder size is within the acceptable limit."
-          fi
-      - name: Verify dist folder contents
-        run: |
-          echo "Listing contents of dist folder before upload:"
-          ls -al ./dist
-      - name: List all files in dist folder (including hidden)
-        run: |
-          echo "Listing all files (including hidden) in dist folder:"
-          ls -alR ./dist 
-
+      # Step 5: Upload artifact (build output)
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: github-pages
+          name: build-artifact
           path: ./dist # Upload the `dist` folder as an artifact   
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
     permissions:
-        contents: read
         pages: write
         id-token: write
         
     steps:  
-
-     - name: Checkout code
-       uses: actions/checkout@v4
-
+    # Step 1: Download artifact
      - name: Download artifact
        uses: actions/download-artifact@v4
        with:
-         name: github-pages # Artifact name used here should match the one used in upload
+         name: build-artifact # Artifact name used here should match the one used in upload
          path: ./dist  # Ensure the path is correctly specified
- # This should now exist if the artifact is downloaded correctly
-     - name: List contents of downloaded artifact
-       run: |
-           echo "Listing contents of downloaded artifact:"
-           ls -alR ./dist  
-  #Remove git metadata from dist folder before the deployment
-     - name: Clean up dist folder
-       run: |
-          rm -rf ./dist/.git 
-          rm -rf ./dist/.DS_Store 
-
+     # Step 2: Deploy to GitHub Pages
      - name: Deploy to GitHub Pages
        uses: actions/deploy-pages@v4
        env:
