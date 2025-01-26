@@ -44,7 +44,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifact
+          name: github-pages
           path: ./dist # Upload the `dist` folder as an artifact   
 
   deploy:
@@ -59,7 +59,7 @@ jobs:
      - name: Download artifact
        uses: actions/download-artifact@v4
        with:
-         name: build-artifact # Artifact name used here should match the one used in upload
+         name: github-pages # Artifact name used here should match the one used in upload
          path: ./dist  # Ensure the path is correctly specified
      # Step 2: Deploy to GitHub Pages
      - name: Deploy to GitHub Pages
