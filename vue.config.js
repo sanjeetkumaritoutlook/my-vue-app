@@ -6,9 +6,7 @@ module.exports = defineConfig({
   chainWebpack: (config) => {
     config.module
       .rule('vue')
-      .use('cache-loader')
-      .loader('cache-loader')
-      .end();
+      .uses.delete('cache-loader'); // Removes the cache-loader for Vue files
   },
   configureWebpack: {
     plugins: isAnalyzeMode ? [new BundleAnalyzerPlugin()] : [],
