@@ -41,21 +41,15 @@ jobs:
       - name: Build Vue App
         run: npm run build
        
-      # Step 5: Remove Hard Links and Symlinks
-      - name: Remove Hard Links and Symlinks
-        run: |
-          echo "Replacing symlinks..."
-          find ./dist -type l -exec sh -c 'cp --remove-destination "$1" "$1.tmp" && mv "$1.tmp" "$1"' _ {} \;
-
-          echo "Checking and resolving hard links..."
-          find ./dist -type f -exec ls -i {} + | awk '{print $1, $NF}' | sort | uniq -d | awk '{print $2}' | xargs -I {} sh -c 'cp --remove-destination "$1" "$1.tmp" && mv "$1.tmp" "$1"' _ {}
+      - name: Check dist folder contents
+        run: ls -l dist  # Debugging step to check if dist/ exists
 
       # Step 5: Upload artifact (build output)
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: github-pages
-          path: ./dist # Upload the `dist` folder as an artifact   
+          path: dist # Upload the `dist` folder as an artifact   
 
   deploy:
     needs: build
@@ -70,7 +64,7 @@ jobs:
        uses: actions/download-artifact@v4
        with:
          name: github-pages # Artifact name used here should match the one used in upload
-         path: ./dist  # Ensure the path is correctly specified
+         path: dist  # Ensure the path is correctly specified
      # Step 2: Deploy to GitHub Pages
      - name: Deploy to GitHub Pages
        uses: actions/deploy-pages@v4
