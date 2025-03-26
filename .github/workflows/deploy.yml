@@ -19,8 +19,6 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    env:
-      NODE_ENV: production  # ✅ This ensures Vue uses the correct NODE_ENV
 
     permissions:
       contents: read
@@ -37,9 +35,6 @@ jobs:
         with:
           node-version: '18' # Ensure this matches your project's Node.js version
 
-      - name: Install Vue CLI
-        run: npm install -g @vue/cli
-          
           
      # Step 3: Install dependencies
       - name: Install dependencies
@@ -50,7 +45,7 @@ jobs:
 
      # Step 4: Build the Vue app
       - name: Build Vue App
-        run: npx vue-cli-service build
+        run: npm run build
 
         # Step 5: Remove Hard Links and Symlinks
       - name: Remove Hard Links and Symlinks
