@@ -34,9 +34,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18' # Ensure this matches your project's Node.js version
+
+      - name: Print NODE_ENV  (Before Build)
+        run: echo "NODE_ENV is $NODE_ENV"
+          
      # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
+      
      # Step 4: Build the Vue app
       - name: Build Vue App
         run: npm run build
