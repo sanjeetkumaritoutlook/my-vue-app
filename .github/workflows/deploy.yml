@@ -40,7 +40,31 @@ jobs:
      # Step 4: Build the Vue app
       - name: Build Vue App
         run: npm run build
+
+        # Step 5: Remove Hard Links and Symlinks
+      - name: Remove Hard Links and Symlinks
+        run: |
+          echo "Replacing symlinks..."
+          find dist -type l -exec sh -c 'cp --remove-destination "$1" "$1.tmp" && mv "$1.tmp" "$1"' _ {} \;
+
+          echo "Checking and resolving hard links..."
+          find dist -type f -exec ls -i {} + | awk '{print $1, $NF}' | sort | uniq -d | awk '{print $2}' | xargs -I {} sh -c 'cp --remove-destination "$1" "$1.tmp" && mv "$1.tmp" "$1"' _ {}  
        
+      - name: Check size of dist folder
+        run: |
+            echo "Checking total size of dist folder..."
+            SIZE=$(du -sh dist | awk '{print $1}')
+            echo "Total size of dist folder: $SIZE"
+            
+            # Convert human-readable size (e.g., 840K, 1M, 2G) into bytes for comparison
+            SIZE_IN_BYTES=$(numfmt --from=iec $SIZE)
+            MAX_SIZE_IN_BYTES=10737418240  # 10GB in bytes
+  
+            if [ "$SIZE_IN_BYTES" -gt "$MAX_SIZE_IN_BYTES" ]; then
+              echo "Warning: dist folder exceeds 10GB limit!"
+            else
+              echo "dist folder size is within the acceptable limit."
+            fi    
       - name: Check dist folder contents
         run: ls -l dist  # Debugging step to check if dist/ exists
 
