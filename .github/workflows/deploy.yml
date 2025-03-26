@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NODE_ENV: production  # ✅ This ensures Vue uses the correct NODE_ENV
-      
+
     permissions:
       contents: read
       pages: write
@@ -37,13 +37,17 @@ jobs:
         with:
           node-version: '18' # Ensure this matches your project's Node.js version
 
-      - name: Print NODE_ENV  (Before Build)
-        run: echo "NODE_ENV is $NODE_ENV"
+      - name: Install Vue CLI
+        run: npm install -g @vue/cli
+          
           
      # Step 3: Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: npm ci # Use `npm ci` to install dependencies faster and more securely
       
+      - name: Print NODE_ENV  (Before Build)
+        run: echo "NODE_ENV is $NODE_ENV"
+
      # Step 4: Build the Vue app
       - name: Build Vue App
         run: npm run build
