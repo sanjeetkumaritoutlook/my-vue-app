@@ -1,5 +1,10 @@
 # my-vue-app
 Vue 3.2 : https://blog.vuejs.org/posts/vue-3-2
+
+check vue version : vue --version
+
+npx vue --version  
+
 ## Project setup
 ```
 npm install
