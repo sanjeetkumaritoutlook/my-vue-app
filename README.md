@@ -33,6 +33,26 @@ process.env.NODE_ENV is set to 'production'.
 
 Minimize dependencies and optimize imports (e.g., tree-shaking).
 
+### <script setup>
+
+In <script setup>, all functions, variables, and imports are top-level — so onClicked is directly available to the template.
+
+You don’t need to define a methods object like in the options API.
+
+
+Introduced in Vue 3.2
+
+Not supported in Vue 2 at all (even with composition API plugin)
+
+It’s part of the Composition API improvements that Vue 3 brought in
+
+If you're using Vue 2:
+
+You’re limited to the Options API (with data, methods, computed, etc.)
+
+You can use the Composition API plugin in Vue 2.7+, but still no <script setup>
+
+
 ### Compiles and hot-reloads for development
 ```
 npm run serve

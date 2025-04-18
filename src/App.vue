@@ -5,31 +5,20 @@
   <MyButton label="Click Me"  @clicked="onClicked"/>
 </template>
 
-<script>
+<script setup>
 import HelloWorld from './components/HelloWorld.vue'
-import FluidNewComponent from './components/FluidNewComponent.vue';
+import FluidNewComponent from './components/FluidNewComponent.vue'
 import MyButton from './components/MyButton.ce.vue'
+import { fluid } from './fluid'
 
-import { fluid } from './fluid';
-export default {
-  name: 'App',
-  components: {
-    HelloWorld,
-    FluidNewComponent,
-    MyButton
-  },
-  methods: {
-    onClicked() {
-      alert('Button was clicked!')
-    }
-  },
-  mounted() {
-    let env = fluid.environments.external;
-    fluid.init(env);
-  }
+// component init
+const env = fluid.environments.external
+fluid.init(env)
+
+// event handler
+function onClicked() {
+  alert('Button was clicked!')
 }
-
-
 </script>
 
 <style>
