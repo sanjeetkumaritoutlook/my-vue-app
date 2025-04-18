@@ -3,26 +3,33 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const isAnalyzeMode = process.env.ANALYZE === 'true';
 module.exports = defineConfig({
   parallel: true,
+  pages: {
+    // Main Vue app
+    index: {
+      entry: 'src/main.js',
+      template: 'public/index.html',
+      filename: 'index.html',
+    },
+
+    // Web Component entry
+    'vue-web-component': {
+      entry: 'src/web-components/button.js',
+      filename: 'vue-web-component.html',
+    },
+  },
   chainWebpack: (config) => {
     config.module
       .rule('vue')
       .uses.delete('cache-loader'); // Removes the cache-loader for Vue files
-
-      config.plugins.delete('html') // avoid injecting HTML for SPA
-      config.plugins.delete('preload')
-      config.plugins.delete('prefetch')
   },
   configureWebpack: {
-    entry: './src/main-wc.js',
     output: {
-      filename: 'my-web-component.js',
+      filename: '[name].js', // important to avoid filename conflict
     },
     plugins: isAnalyzeMode ? [new BundleAnalyzerPlugin()] : [],
   },
   transpileDependencies: true,
   publicPath: process.env.NODE_ENV === 'production'
   ? '/my-vue-app/' // Replace 'REPO_NAME' with your repository name
-  : '/my-vue-app/',
-   // Disable Vue runtime injection
-   runtimeCompiler: false,
+  : '/my-vue-app/'
 })
