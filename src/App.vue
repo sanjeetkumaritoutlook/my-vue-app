@@ -2,7 +2,7 @@
   <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App"/>
   <FluidNewComponent/>
-  <MyButton />
+  <MyButton label="Click Me"  @clicked="onClicked"/>
 </template>
 
 <script>
@@ -17,10 +17,19 @@ export default {
     HelloWorld,
     FluidNewComponent,
     MyButton
+  },
+  methods: {
+    onClicked() {
+      alert('Button was clicked!')
+    }
+  },
+  mounted() {
+    let env = fluid.environments.external;
+    fluid.init(env);
   }
 }
-let env = fluid.environments.external;
-fluid.init(env);
+
+
 </script>
 
 <style>
