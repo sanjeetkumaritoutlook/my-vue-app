@@ -82,6 +82,7 @@ jobs:
           path: dist # Upload the `dist` folder as an artifact   
 
   deploy:
+    if: false
     needs: build
     runs-on: ubuntu-latest
     permissions:

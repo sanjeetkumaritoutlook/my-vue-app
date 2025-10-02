@@ -30,6 +30,6 @@ module.exports = defineConfig({
   },
   transpileDependencies: true,
   publicPath: process.env.NODE_ENV === 'production'
-  ? '/my-vue-app/' // Replace 'REPO_NAME' with your repository name
-  : '/my-vue-app/'
+  ? './' // Replace 'REPO_NAME' with your repository name
+  : './'
 })
