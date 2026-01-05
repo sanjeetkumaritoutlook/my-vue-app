@@ -5,6 +5,66 @@ check vue version : vue --version
 
 npx vue --version  
 
+## Setup vue app from sctarch
+
+```
+npm create vue@latest
+```
+You’ll be prompted with options like:
+```
+✔ Project name: vue-app
+✔ Add TypeScript?        Yes / No
+✔ Add JSX Support?       No
+✔ Add Vue Router?        Yes
+✔ Add Pinia?             Yes
+✔ Add Vitest?            Optional
+✔ Add ESLint?            Yes
+✔ Add Prettier?          Yes
+```
+
+then:
+```
+cd vue-app
+npm install
+npm run dev
+```
+App will be available at:
+```
+http://localhost:5173
+```
+If you want ultra-minimal setup:
+```
+npm create vite@latest vue-app -- --template vue
+```
+
+Vue will feel closest to Angular templates + React hooks
+
+Composition API ≈ React hooks (but cleaner)
+
+Pinia ≈ Redux Toolkit (simpler)
+
+Vue’s official tooling is create-vue (uses Vite internally).
+
+## Project structure
+```
+vue-app/
+│
+├── src/
+│   ├── assets/        # Images, styles
+│   ├── components/    # Reusable components
+│   ├── views/         # Route-level pages
+│   ├── router/        # vue-router config
+│   ├── stores/        # pinia stores
+│   ├── App.vue
+│   └── main.ts
+│
+├── public/
+├── index.html
+├── package.json
+└── vite.config.ts
+```
+
+
 ## Project setup
 ```
 npm install
